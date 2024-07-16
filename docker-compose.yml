@@ -1,0 +1,26 @@
+version: "3.0"
+
+volumes:
+  postgres_data:
+
+services:
+  db:
+    image: postgres
+    container_name: url-shortener-api-db
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+      POSTGRES_DB: ${POSTGRES_DB:-url_shortener}
+      POSTGRES_SCHEMA: ${POSTGRES_SCHEMA:-public}
+    volumes:
+      - postgres_data:/data/postgres
+    ports:
+      - 5432:5432
+
+  adminer:
+    image: adminer
+    container_name: url-shortener-api-adminer
+    restart: always
+    ports:
+      - 5000:8080
