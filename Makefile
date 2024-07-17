@@ -4,5 +4,8 @@ db-migrate-up:
 db-migrate-down:
 	migrate -path ./db/migration -database "$(POSTGRES_URL)" -verbose down $(STEPS)
 
+sqlc:
+	sqlc generate
+
 run:
 	go run ./cmd/server"postgres://${}:postgres@localhost:5432/postgres?sslmode=disable"
