@@ -9,9 +9,6 @@ import (
 	"github.com/rohitvpatil0810/go-url-shortener-api/pkg/logger"
 )
 
-func init() {
-}
-
 func main() {
 	config, err := config.LoadConfig()
 	if err != nil {
