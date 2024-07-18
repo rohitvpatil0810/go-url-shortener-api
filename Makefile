@@ -8,4 +8,7 @@ sqlc:
 	sqlc generate
 
 run:
-	go run ./cmd/server"postgres://${}:postgres@localhost:5432/postgres?sslmode=disable"
+	go run ./cmd/server
+
+test:
+	go test -v -cover ./...
