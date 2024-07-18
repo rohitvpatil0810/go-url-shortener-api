@@ -1,12 +1,14 @@
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 CREATE TABLE "Users" (
-  "id" uuid PRIMARY KEY,
+  "id" uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
   "username" varchar UNIQUE NOT NULL,
   "password_hash" varchar NOT NULL,
   "created_at" timestamp DEFAULT (now())
 );
 
 CREATE TABLE "Urls" (
-  "id" uuid PRIMARY KEY,
+  "id" uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
   "user_id" uuid,
   "shortened_url" varchar UNIQUE NOT NULL,
   "original_url" varchar NOT NULL,
