@@ -4,11 +4,14 @@ import (
 	"context"
 	"testing"
 
-	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 )
 
-func TestCreateUser(t *testing.T) {
+func clearUserTable() {
+	testQueries.DeleteAllUsers(context.Background())
+}
+
+func createRandomUser(t *testing.T) User {
 	arg := CreateUserParams{
 		Username:     "user1",
 		PasswordHash: "password",
@@ -22,9 +25,12 @@ func TestCreateUser(t *testing.T) {
 	assert.Equal(t, arg.PasswordHash, user.PasswordHash, "PasswordHash should be same")
 	assert.NotZero(t, user.ID, "ID should not be zero")
 
-	// delete user
-	t.Cleanup(func() {
-		id := uuid.UUID(user.ID)
-		_ = testQueries.DeleteUserById(context.Background(), id)
-	})
+	return user
+}
+
+func TestCreateUser(t *testing.T) {
+	createRandomUser(t)
+
+	// clear user table
+	t.Cleanup(clearUserTable)
 }
