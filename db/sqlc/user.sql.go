@@ -9,7 +9,6 @@ import (
 	"context"
 
 	"github.com/google/uuid"
-	"github.com/lib/pq"
 )
 
 const createUser = `-- name: CreateUser :one
@@ -38,21 +37,21 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 	return i, err
 }
 
+const deleteAllUsers = `-- name: DeleteAllUsers :exec
+DELETE FROM "Users"
+`
+
+func (q *Queries) DeleteAllUsers(ctx context.Context) error {
+	_, err := q.db.ExecContext(ctx, deleteAllUsers)
+	return err
+}
+
 const deleteUserById = `-- name: DeleteUserById :exec
 DELETE FROM "Users" WHERE id = $1
 `
 
 func (q *Queries) DeleteUserById(ctx context.Context, id uuid.UUID) error {
 	_, err := q.db.ExecContext(ctx, deleteUserById, id)
-	return err
-}
-
-const deleteUsersByIds = `-- name: DeleteUsersByIds :exec
-DELETE FROM "Users" WHERE id IN (SELECT unnest FROM UNNEST($1::uuid[]))
-`
-
-func (q *Queries) DeleteUsersByIds(ctx context.Context, dollar_1 []uuid.UUID) error {
-	_, err := q.db.ExecContext(ctx, deleteUsersByIds, pq.Array(dollar_1))
 	return err
 }
 

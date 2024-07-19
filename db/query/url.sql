@@ -30,3 +30,5 @@ WHERE id = $1;
 DELETE FROM "Urls"
 WHERE user_id = $1;
 
+-- name: DeleteAllUrls :exec
+DELETE FROM "Urls";
