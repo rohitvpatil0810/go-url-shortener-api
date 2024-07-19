@@ -11,12 +11,12 @@ import (
 )
 
 type Url struct {
-	ID           uuid.UUID     `json:"id"`
-	UserID       uuid.NullUUID `json:"user_id"`
-	ShortenedUrl string        `json:"shortened_url"`
-	OriginalUrl  string        `json:"original_url"`
-	ClickCount   int64         `json:"click_count"`
-	CreatedAt    sql.NullTime  `json:"created_at"`
+	ID           uuid.UUID    `json:"id"`
+	UserID       uuid.UUID    `json:"user_id"`
+	ShortenedUrl string       `json:"shortened_url"`
+	OriginalUrl  string       `json:"original_url"`
+	ClickCount   int64        `json:"click_count"`
+	CreatedAt    sql.NullTime `json:"created_at"`
 }
 
 type User struct {

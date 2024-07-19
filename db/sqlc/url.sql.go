@@ -20,9 +20,9 @@ INSERT INTO "Urls" (
 `
 
 type CreateUrlParams struct {
-	ShortenedUrl string        `json:"shortened_url"`
-	OriginalUrl  string        `json:"original_url"`
-	UserID       uuid.NullUUID `json:"user_id"`
+	ShortenedUrl string    `json:"shortened_url"`
+	OriginalUrl  string    `json:"original_url"`
+	UserID       uuid.UUID `json:"user_id"`
 }
 
 func (q *Queries) CreateUrl(ctx context.Context, arg CreateUrlParams) (Url, error) {
@@ -63,7 +63,7 @@ DELETE FROM "Urls"
 WHERE user_id = $1
 `
 
-func (q *Queries) DeleteUrlsByUserId(ctx context.Context, userID uuid.NullUUID) error {
+func (q *Queries) DeleteUrlsByUserId(ctx context.Context, userID uuid.UUID) error {
 	_, err := q.db.ExecContext(ctx, deleteUrlsByUserId, userID)
 	return err
 }
@@ -112,9 +112,9 @@ WHERE user_id = $1 ORDER BY created_at LIMIT $2 OFFSET $3
 `
 
 type GetUrlsByUserIdParams struct {
-	UserID uuid.NullUUID `json:"user_id"`
-	Limit  int32         `json:"limit"`
-	Offset int32         `json:"offset"`
+	UserID uuid.UUID `json:"user_id"`
+	Limit  int32     `json:"limit"`
+	Offset int32     `json:"offset"`
 }
 
 func (q *Queries) GetUrlsByUserId(ctx context.Context, arg GetUrlsByUserIdParams) ([]Url, error) {

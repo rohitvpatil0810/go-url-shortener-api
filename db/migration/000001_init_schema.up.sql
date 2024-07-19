@@ -9,7 +9,7 @@ CREATE TABLE "Users" (
 
 CREATE TABLE "Urls" (
   "id" uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-  "user_id" uuid,
+  "user_id" uuid NOT NULL,
   "shortened_url" varchar UNIQUE NOT NULL,
   "original_url" varchar NOT NULL,
   "click_count" bigint NOT NULL DEFAULT (0),
