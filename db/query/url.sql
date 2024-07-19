@@ -5,6 +5,9 @@ INSERT INTO "Urls" (
   $1, $2, $3
 ) RETURNING *;
 
+-- name: GetUrls :many
+SELECT * FROM "Urls" ORDER BY created_at LIMIT $1 OFFSET $2;
+
 -- name: GetUrlByShortenedUrl :one
 SELECT * FROM "Urls"
 WHERE shortened_url = $1 LIMIT 1;

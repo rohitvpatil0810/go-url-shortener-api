@@ -106,6 +106,45 @@ func (q *Queries) GetUrlByShortenedUrl(ctx context.Context, shortenedUrl string)
 	return i, err
 }
 
+const getUrls = `-- name: GetUrls :many
+SELECT id, user_id, shortened_url, original_url, click_count, created_at FROM "Urls" ORDER BY created_at LIMIT $1 OFFSET $2
+`
+
+type GetUrlsParams struct {
+	Limit  int32 `json:"limit"`
+	Offset int32 `json:"offset"`
+}
+
+func (q *Queries) GetUrls(ctx context.Context, arg GetUrlsParams) ([]Url, error) {
+	rows, err := q.db.QueryContext(ctx, getUrls, arg.Limit, arg.Offset)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Url
+	for rows.Next() {
+		var i Url
+		if err := rows.Scan(
+			&i.ID,
+			&i.UserID,
+			&i.ShortenedUrl,
+			&i.OriginalUrl,
+			&i.ClickCount,
+			&i.CreatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getUrlsByUserId = `-- name: GetUrlsByUserId :many
 SELECT id, user_id, shortened_url, original_url, click_count, created_at FROM "Urls"
 WHERE user_id = $1 ORDER BY created_at LIMIT $2 OFFSET $3
