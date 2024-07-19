@@ -34,3 +34,9 @@ func TestRandomPassword(t *testing.T) {
 	s := RandomPassword()
 	assert.Equal(t, 10, len(s), "Length should be 10")
 }
+
+func TestRandomUrl(t *testing.T) {
+	s := RandomUrl()
+	assert.Contains(t, s, "https://example.com/", "Should contain base URL")
+	assert.Equal(t, 10+len("https://example.com/"), len(s), "Length should be 10 + base URL length")
+}

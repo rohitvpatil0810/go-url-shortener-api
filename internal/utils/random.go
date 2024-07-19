@@ -38,3 +38,8 @@ func RandomUsername() string {
 func RandomPassword() string {
 	return RandomString(10)
 }
+
+func RandomUrl() string {
+	baseURL := "https://example.com/"
+	return baseURL + RandomString(10)
+}
