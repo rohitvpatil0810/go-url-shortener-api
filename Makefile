@@ -1,3 +1,6 @@
+docker-up:
+	docker compose --env-file ./.env up -d
+
 db-migrate-up:
 	migrate -path ./db/migration -database "$(POSTGRES_URL)" -verbose up
 
