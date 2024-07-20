@@ -1,0 +1,1 @@
+ALTER TABLE "Users" DROP COLUMN "last_logout_time";

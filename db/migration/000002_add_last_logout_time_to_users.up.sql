@@ -1,0 +1,1 @@
+ALTER TABLE "Users" ADD COLUMN "last_logout_time" timestamp;
