@@ -20,8 +20,9 @@ type Url struct {
 }
 
 type User struct {
-	ID           uuid.UUID    `json:"id"`
-	Username     string       `json:"username"`
-	PasswordHash string       `json:"password_hash"`
-	CreatedAt    sql.NullTime `json:"created_at"`
+	ID             uuid.UUID    `json:"id"`
+	Username       string       `json:"username"`
+	PasswordHash   string       `json:"password_hash"`
+	CreatedAt      sql.NullTime `json:"created_at"`
+	LastLogoutTime sql.NullTime `json:"last_logout_time"`
 }

@@ -17,7 +17,7 @@ INSERT INTO "Users" (
 ) VALUES (
   $1, $2
 )
-RETURNING id, username, password_hash, created_at
+RETURNING id, username, password_hash, created_at, last_logout_time
 `
 
 type CreateUserParams struct {
@@ -33,6 +33,7 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 		&i.Username,
 		&i.PasswordHash,
 		&i.CreatedAt,
+		&i.LastLogoutTime,
 	)
 	return i, err
 }
@@ -56,7 +57,7 @@ func (q *Queries) DeleteUserById(ctx context.Context, id uuid.UUID) error {
 }
 
 const getUserById = `-- name: GetUserById :one
-SELECT id, username, password_hash, created_at FROM "Users"
+SELECT id, username, password_hash, created_at, last_logout_time FROM "Users"
 WHERE id = $1
 `
 
@@ -68,12 +69,13 @@ func (q *Queries) GetUserById(ctx context.Context, id uuid.UUID) (User, error) {
 		&i.Username,
 		&i.PasswordHash,
 		&i.CreatedAt,
+		&i.LastLogoutTime,
 	)
 	return i, err
 }
 
 const getUserByUsername = `-- name: GetUserByUsername :one
-SELECT id, username, password_hash, created_at FROM "Users"
+SELECT id, username, password_hash, created_at, last_logout_time FROM "Users"
 WHERE username = $1
 `
 
@@ -85,12 +87,13 @@ func (q *Queries) GetUserByUsername(ctx context.Context, username string) (User,
 		&i.Username,
 		&i.PasswordHash,
 		&i.CreatedAt,
+		&i.LastLogoutTime,
 	)
 	return i, err
 }
 
 const getUsers = `-- name: GetUsers :many
-SELECT id, username, password_hash, created_at FROM "Users" ORDER BY created_at LIMIT $1 OFFSET $2
+SELECT id, username, password_hash, created_at, last_logout_time FROM "Users" ORDER BY created_at LIMIT $1 OFFSET $2
 `
 
 type GetUsersParams struct {
@@ -112,6 +115,7 @@ func (q *Queries) GetUsers(ctx context.Context, arg GetUsersParams) ([]User, err
 			&i.Username,
 			&i.PasswordHash,
 			&i.CreatedAt,
+			&i.LastLogoutTime,
 		); err != nil {
 			return nil, err
 		}
