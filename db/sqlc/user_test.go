@@ -3,7 +3,6 @@ package db
 import (
 	"context"
 	"database/sql"
-	"fmt"
 	"testing"
 
 	"github.com/rohitvpatil0810/go-url-shortener-api/internal/utils"
@@ -70,12 +69,10 @@ func TestGetUserByUsername(t *testing.T) {
 
 func TestDeleteUserById(t *testing.T) {
 	user := createRandomUser(t)
-	fmt.Println(user)
 	err := testQueries.DeleteUserById(context.Background(), user.ID)
 	assert.NoError(t, err, "Error should be nil")
 
 	user2, err := testQueries.GetUserById(context.Background(), user.ID)
-	fmt.Print(user2)
 	assert.Error(t, err, "Error should not be nil")
 	assert.ErrorIs(t, err, sql.ErrNoRows, "Error should be sql.ErrNoRows")
 	assert.Empty(t, user2, "User should be empty")
