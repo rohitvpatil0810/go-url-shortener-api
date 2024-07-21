@@ -5,7 +5,9 @@ import (
 	"net/http"
 	"os"
 
+	routes "github.com/rohitvpatil0810/go-url-shortener-api/api/v1"
 	"github.com/rohitvpatil0810/go-url-shortener-api/internal/config"
+	"github.com/rohitvpatil0810/go-url-shortener-api/internal/middleware"
 	"github.com/rohitvpatil0810/go-url-shortener-api/pkg/logger"
 )
 
@@ -16,13 +18,15 @@ func main() {
 		os.Exit(1)
 	}
 
-	http.Handle("/", http.HandlerFunc(serveHome))
+	router := routes.RegisterV1Routes()
+
+	middlewareChain := middleware.CreateChain(middleware.Logging)
+
+	server := http.Server{
+		Addr:    ":" + config.Port,
+		Handler: middlewareChain(router),
+	}
 
 	logger.Logger.Info("Starting server", slog.String("port", config.Port))
-	http.ListenAndServe(":"+config.Port, nil)
-}
-
-func serveHome(w http.ResponseWriter, r *http.Request) {
-	slog.Info("Serving home")
-	w.Write([]byte("<p>Welcome to Url Shortener API</p>"))
+	server.ListenAndServe()
 }
