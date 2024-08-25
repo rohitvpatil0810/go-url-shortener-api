@@ -13,6 +13,9 @@ db-migrate-down:
 sqlc:
 	sqlc generate
 
+update:
+	go get -u ./...
+
 run:
 	go run ./cmd/server
 
